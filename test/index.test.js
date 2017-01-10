@@ -17,7 +17,7 @@ describe('jschemator test', () => {
 
     it('should run validations on an empty object, and return not valid', () => {
       const model = {};
-      const validator = jschemator(schema, model, 'es');
+      const validator = jschemator(schema, model, 'en');
 
       const valid = validator.validate();
 
@@ -25,6 +25,7 @@ describe('jschemator test', () => {
       validator.should.have.ownProperty('$result');
       validator.$result.should.be.an.Object();
       validator.$result.should.have.ownProperty('$errors');
+      console.log(validator.$errors);
     });
   });
 });
