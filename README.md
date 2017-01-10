@@ -10,10 +10,10 @@ $ npm install jschemator
 
 | Parameter | Default | Description |
 |-----------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| schema | None | The JSON schema to validate, this plugin uses[ajv](https://github.com/epoberezkin/ajv) check the docs to create your schemas |
+| schema | None | The JSON schema to validate, this plugin uses [ajv](https://github.com/epoberezkin/ajv) check the docs to create your schemas |
 | model | None | The object to validate |
 | locale | 'en' | Locale to error messages, this plugin uses [ajv-i18n](https://github.com/epoberezkin/ajv-i18n), see the doc to all available languages |
-| options | {allErrors: true} | ajv options, this plugin uses[ajv](https://github.com/epoberezkin/ajv) see the doc to all options |
+| options | {allErrors: true} | ajv options, this plugin uses [ajv](https://github.com/epoberezkin/ajv) see the doc to all options |
 
 ## Usage
 
