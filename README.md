@@ -4,7 +4,7 @@ Simple npm package to validate an object using JSON Schema, and get errors in fr
 ## Install
 
 ```bash
-$ npm install left-pad
+$ npm install jschemator
 ```
 ## Options
 
