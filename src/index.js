@@ -45,17 +45,16 @@ const validator = {
   },
 
   set(valid, errors = []) {
+    errors = errors || [];
     i18n[this.locale](errors);
     this.$result.$valid = valid;
     this.$result.$errors = this.process(errors);
   },
 
   process(errors = []) {
-    const _this = this;
     let result = {};
     errors.forEach(e => {
-      let path = e.dataPath.split('.')
-        .filter(e => !!e);
+      let path = e.dataPath.split('.').filter(e => !!e);
       switch(e.keyword) {
       case 'required':
         path.push(e.params.missingProperty);
