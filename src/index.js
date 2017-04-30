@@ -8,10 +8,8 @@ import _ from 'lodash';
  */
 
 const validator = {
-
   // Initialize the object with schema, model and locale
   init(schema, model, locale = 'en', options = { allErrors: true }) {
-
     this.locale = locale;
     this.model = model;
     this.schema = schema;
@@ -31,8 +29,9 @@ const validator = {
     return this;
   },
 
-  validate($submitted = false) {
-    const valid = this.validator(this.model);
+  validate($submitted = false, model = null) {
+    model = model || this.model;
+    const valid = this.validator(model);
     const { errors } = this.validator;
 
     this.set(valid, errors);
@@ -54,7 +53,8 @@ const validator = {
   process(errors = []) {
     let result = {};
     errors.forEach(e => {
-      let path = e.dataPath.split('.').filter(e => !!e);
+      const chunks = e.dataPath.split('.');
+      let path = chunks.filter(e => !!e);
       switch(e.keyword) {
       case 'required':
         path.push(e.params.missingProperty);
@@ -77,10 +77,9 @@ const validator = {
   get $errors() {
     return this.$result.$errors;
   }
-
 };
 
-export default(schema, model, options, locale) =>  {
+export default(schema, model, options, locale) => {
   const v = Object.create(validator);
   return v.init(schema, model, options, locale);
 };
