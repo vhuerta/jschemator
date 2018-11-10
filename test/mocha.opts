@@ -2,6 +2,5 @@
 --recursive
 --slow 2000
 --timeout 15000
---require babel-register
 --require should
 --bail

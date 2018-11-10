@@ -11,9 +11,8 @@ $ npm install jschemator
 | Parameter | Default | Description |
 |-----------|-------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | schema | None | The JSON schema to validate, this plugin uses [ajv](https://github.com/epoberezkin/ajv) check the docs to create your schemas |
-| model | None | The object to validate |
 | locale | 'en' | Locale to error messages, this plugin uses [ajv-i18n](https://github.com/epoberezkin/ajv-i18n), see the doc to all available languages |
-| options | {allErrors: true} | ajv options, this plugin uses [ajv](https://github.com/epoberezkin/ajv) see the doc to all options |
+| options | {allErrors: true, flat: false} | ajv options, this plugin uses [ajv](https://github.com/epoberezkin/ajv) see the doc to all options |
 
 ## Usage
 
@@ -36,63 +35,23 @@ const schema = {
  };
  
  const model = {};
- const validator = jschemator(schema, model, 'en');
+ let validator = jschemator(schema, 'en');
  
- const valid = validator.validate();
+ const valid = validator.validate(model);
  // => false
  
- validator.$errors;
+ validator.errors;
  // => { email: { required: 'should have required property email' } }
+ validator.paths;
+ // => ['email.required']
+
+ validator = jschemator(schema, 'en', {flat: true});
  
-```
+ const valid = validator.validate(model);
 
-#### Vue.JS example
-
-```html
-
-<div class="form-group" v-bind:class="[{ 'has-error': (validator.$submitted && validator.$errors.email)}]">
-  <label for="email" class="control-label">Email:</label>
-  <input class="form-control" type="text" id="email" v-model="email" @input="validate">
-  <span class="text-danger" v-if="validator.$submitted && validator.$errors.email" v-for="(message, key) in validator.$errors.email">
-    This field, {{message}}
-  </span>
-</div>
-
-```
-
-```javascript
-import jschemator from 'jschemator';
-
-const schema = {
-  type: 'object',
-  properties: {
-    email: {
-      type: 'string',
-      format: 'email'
-    }
-  },
-  required: ['email']
-};
-
-export default {
-  data() {
-    return {
-      email: null,
-      validator: jschemator(schema, this, 'es')
-    }
-  },
-  methods:  {
-    validate()  {
-      this.validator.validate();
-    },
-    submit() {
-      if(this.validator.validate(true)) {
-        console.log('valid');
-      } else {
-        console.log('no valid');
-      }
-    }
-  }
-};
-  
+ validator.errors;
+ // => { 'email..required': 'should have required property email' }
+ validator.paths;
+ // => ['email.required']
+ 
 ```
