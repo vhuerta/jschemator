@@ -26,8 +26,18 @@ describe('jschemator test', () => {
     it('should fail validating an invalid payload, errors should have \'deep\' format', () => {
       const model = { nested: { date: 'bad-format-date' } };
       const expectedErrorsObject = {
-        email : { required: 'should have required property email' },
-        nested: { date: { format: 'should match format "date-time"' } }
+        email: {
+          path   : 'email.required',
+          error  : 'required',
+          message: 'should have required property email'
+        },
+        nested: {
+          date: {
+            path   : 'nested.date.format',
+            error  : 'format',
+            message: 'should match format "date-time"'
+          }
+        }
       };
 
       const validator = jschemator(schema, 'en');
@@ -41,10 +51,18 @@ describe('jschemator test', () => {
     it('should fail validating an invalid payload, errors should have \'flat\' format', () => {
       const model = { nested: { date: 'bad-format-date' } };
       const expectedErrorsObject = {
-        'email.required'    : 'debe tener la propiedad requerida email',
-        'nested.date.format': 'debe coincidir con el formato "date-time"'
+        email: {
+          path   : 'email.required',
+          error  : 'required',
+          message: 'debe tener la propiedad requerida email'
+        },
+        'nested.date': {
+          path   : 'nested.date.format',
+          error  : 'format',
+          message: 'debe coincidir con el formato \"date-time\"'
+        }
       };
-      const expectedPaths = ['email.required', 'nested.date.format'];
+      const expectedPaths = ['email', 'nested.date'];
 
       const validator = jschemator(schema, 'es', { flat: true });
 

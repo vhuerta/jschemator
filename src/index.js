@@ -8,7 +8,12 @@ function flatten(source, flattened = {}, keySoFar = '') {
   function getNextKey(key) {
     return `${keySoFar}${keySoFar ? pathDelimiter : ''}${key}`;
   }
-  if (typeof source === 'object') {
+  if (
+    typeof source === 'object'
+    && 'path' in source === false
+    && 'error' in source === false
+    && 'message' in source === false
+  ) {
     for (const key in source) {
       flatten(source[key], flattened, getNextKey(key));
     }
@@ -67,12 +72,12 @@ const validator = {
       switch (e.keyword) {
       case 'required':
         path.push(e.params.missingProperty);
-        path.push(e.keyword);
-        set(result, path, e.message);
-        break;
       default:
-        path.push(e.keyword);
-        set(result, path, e.message);
+        set(result, path, {
+          error  : e.keyword,
+          message: e.message,
+          path   : [...path, e.keyword].join('.')
+        });
       }
     });
     return result;
